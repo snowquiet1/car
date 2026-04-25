@@ -40,8 +40,7 @@ int main(void)
 {
     SYSCFG_DL_init();
 
-    delay_cycles(3200000);
-    OLED_Init();
+
 
 
     while (1) {
