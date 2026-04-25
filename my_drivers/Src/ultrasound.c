@@ -5,6 +5,7 @@ volatile uint32_t echo_rise_time = 0;
 volatile uint32_t echo_fall_time = 0;
 volatile uint8_t  echo_done = 0;
 float distance = 0;
+float last_diatance = 0;
 
 void UStrasound_Init(void)
 {
@@ -51,6 +52,18 @@ void GROUP1_IRQHandler(void)
             DL_Timer_stopCounter(Timer_Sound_INST);
             DL_Timer_setTimerCount(Timer_Sound_INST, 0);
             distance = 34000000.0 * (echo_fall_time - echo_rise_time) / 2 / fre;
+            if(distance <= 0)
+            {
+                distance = last_diatance;
+            }
+            if(distance >= 50)
+            {
+                distance =last_diatance;
+            }
+            else 
+            {
+                last_diatance = distance;
+            }
         }
     }
 }

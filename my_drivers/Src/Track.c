@@ -3,8 +3,9 @@
 #define Distance_need 20
 #define Middle 4
 
-float KP0 = 20,KI0 = 20,P0 = 0,I0 = 0 ,Speedbase = 0;
 
+float KP0 = 20,KI0 = 20,P0 = 0,I0 = 0 ,Speedbase = 0;
+float distance_error = 0;
 
 float KP1 = 20,KI1 = 20,P1  = 0,I1  = 0,Speedvary = 0;
 float position = 0;
@@ -18,9 +19,17 @@ void Track_Init(void)
 
 void Track_go(void)
 {
-    P0  = KP0 * (distance - Distance_need);
-    I0  = KI0 * (distance - Distance_need) + I0;
-    Speedbase = P0 + I0;
+    distance_error = distance - Distance_need;
+    P0  = KP0 * distance_error;
+    
+    if (distance > Distance_need)
+    {
+        Speedbase = P0;
+    }
+    else
+    {
+        Speedbase = 0;
+    }
 
     position = Graysensor_GetPosition();
     P1 = KP1 * (position - Middle);

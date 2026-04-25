@@ -10,6 +10,7 @@
 "./my_drivers/Src/font.o"
 "./my_drivers/Src/graysensor.o"
 "./my_drivers/Src/motor.o"
+"./my_drivers/Src/pid.o"
 "./my_drivers/Src/ultrasound.o"
 -l"./device_linker.cmd"
 -ldevice.cmd.genlibs
