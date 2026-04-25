@@ -4,7 +4,7 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS
+CG_TOOL_ROOT := D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS
 
 GEN_OPTS__FLAG := @"./device.opt" 
 GEN_CMDS__FLAG := -Wl,-l"./device_linker.cmd" 
@@ -13,8 +13,10 @@ ORDERED_OBJS += \
 "./empty.o" \
 "./ti_msp_dl_config.o" \
 "./startup_mspm0g351x_ticlang.o" \
+"./my_drivers/Src/MahonyAHRS.o" \
 "./my_drivers/Src/OLED.o" \
 "./my_drivers/Src/Track.o" \
+"./my_drivers/Src/bt_uart.o" \
 "./my_drivers/Src/encoder.o" \
 "./my_drivers/Src/font.o" \
 "./my_drivers/Src/graysensor.o" \
@@ -125,28 +127,28 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-empty_LP_MSPM0G3519_nortos_ticlang.out 
+car.out 
 
 EXE_OUTPUTS__QUOTED += \
-"empty_LP_MSPM0G3519_nortos_ticlang.out" 
+"car.out" 
 
 
 # All Target
 all: $(OBJS) $(GEN_CMDS)
-	@$(MAKE) --no-print-directory -Onone "empty_LP_MSPM0G3519_nortos_ticlang.out"
+	@$(MAKE) --no-print-directory -Onone "car.out"
 
 # Tool invocations
-empty_LP_MSPM0G3519_nortos_ticlang.out: $(OBJS) $(GEN_CMDS)
+car.out: $(OBJS) $(GEN_CMDS)
 	@echo 'Arm Linker - building target: "$@"'
-	"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe" @"device.opt"  -march=thumbv6m -mcpu=cortex-m0plus -mfloat-abi=soft -mlittle-endian -mthumb -O2 -gdwarf-3 -Wl,-m"empty_LP_MSPM0G3519_nortos_ticlang.map" -Wl,-i"C:/ti/mspm0_sdk_2_06_00_05/source" -Wl,-i"C:/Users/33548/workspace_ccstheia/empty_LP_MSPM0G3519_nortos_ticlang" -Wl,-i"C:/Users/33548/workspace_ccstheia/empty_LP_MSPM0G3519_nortos_ticlang/Debug/syscfg" -Wl,-i"C:/ti/ccs2031/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/lib" -Wl,--diag_wrap=off -Wl,--display_error_number -Wl,--warn_sections -Wl,--xml_link_info="empty_LP_MSPM0G3519_nortos_ticlang_linkInfo.xml" -Wl,--rom_model -o "empty_LP_MSPM0G3519_nortos_ticlang.out" $(ORDERED_OBJS)
+	"D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/bin/tiarmclang.exe" @"device.opt"  -march=thumbv6m -mcpu=cortex-m0plus -mfloat-abi=soft -mlittle-endian -mthumb -O2 -gdwarf-3 -Wl,-m"car.map" -Wl,-i"D:/ti/mspm0_sdk_2_06_00_05/source" -Wl,-i"C:/Users/xyx/workspace_ccstheia/car" -Wl,-i"C:/Users/xyx/workspace_ccstheia/car/Debug/syscfg" -Wl,-i"D:/ti/ccs2020/ccs/tools/compiler/ti-cgt-armllvm_4.0.4.LTS/lib" -Wl,--diag_wrap=off -Wl,--display_error_number -Wl,--warn_sections -Wl,--xml_link_info="car_linkInfo.xml" -Wl,--rom_model -o "car.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(GEN_MISC_FILES__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "empty.o" "ti_msp_dl_config.o" "startup_mspm0g351x_ticlang.o" "my_drivers\Src\OLED.o" "my_drivers\Src\Track.o" "my_drivers\Src\encoder.o" "my_drivers\Src\font.o" "my_drivers\Src\graysensor.o" "my_drivers\Src\motor.o" "my_drivers\Src\ultrasound.o" 
-	-$(RM) "empty.d" "ti_msp_dl_config.d" "startup_mspm0g351x_ticlang.d" "my_drivers\Src\OLED.d" "my_drivers\Src\Track.d" "my_drivers\Src\encoder.d" "my_drivers\Src\font.d" "my_drivers\Src\graysensor.d" "my_drivers\Src\motor.d" "my_drivers\Src\ultrasound.d" 
+	-$(RM) "empty.o" "ti_msp_dl_config.o" "startup_mspm0g351x_ticlang.o" "my_drivers\Src\MahonyAHRS.o" "my_drivers\Src\OLED.o" "my_drivers\Src\Track.o" "my_drivers\Src\bt_uart.o" "my_drivers\Src\encoder.o" "my_drivers\Src\font.o" "my_drivers\Src\graysensor.o" "my_drivers\Src\motor.o" "my_drivers\Src\ultrasound.o" 
+	-$(RM) "empty.d" "ti_msp_dl_config.d" "startup_mspm0g351x_ticlang.d" "my_drivers\Src\MahonyAHRS.d" "my_drivers\Src\OLED.d" "my_drivers\Src\Track.d" "my_drivers\Src\bt_uart.d" "my_drivers\Src\encoder.d" "my_drivers\Src\font.d" "my_drivers\Src\graysensor.d" "my_drivers\Src\motor.d" "my_drivers\Src\ultrasound.d" 
 	-@echo ' '
 
 .PHONY: all clean dependents
