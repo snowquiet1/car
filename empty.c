@@ -46,13 +46,7 @@ int main(void)
 
     while (1) {
 
-        delay_cycles(3200000);
-        // distance1 = Ustrasound_getdiatance();
-        sprintf(distance_data,"Distance:%.2f", distance1);
-        OLED_NewFrame();
-        OLED_PrintASCIIString(1, 1, distance_data, &afont8x6, OLED_COLOR_NORMAL);
 
-        OLED_ShowFrame();
 
     }
 }

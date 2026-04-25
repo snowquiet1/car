@@ -143,10 +143,15 @@ extern "C" {
 
 
 /* Defines for Timer_Sound */
-#define Timer_Sound_INST                                                 (TIMA1)
-#define Timer_Sound_INST_IRQHandler                             TIMA1_IRQHandler
-#define Timer_Sound_INST_INT_IRQN                               (TIMA1_INT_IRQn)
+#define Timer_Sound_INST                                                 (TIMG0)
+#define Timer_Sound_INST_IRQHandler                             TIMG0_IRQHandler
+#define Timer_Sound_INST_INT_IRQN                               (TIMG0_INT_IRQn)
 #define Timer_Sound_INST_LOAD_VALUE                                     (65499U)
+/* Defines for Timer_Track */
+#define Timer_Track_INST                                                 (TIMA1)
+#define Timer_Track_INST_IRQHandler                             TIMA1_IRQHandler
+#define Timer_Track_INST_INT_IRQN                               (TIMA1_INT_IRQn)
+#define Timer_Track_INST_LOAD_VALUE                                       (399U)
 
 
 
@@ -216,6 +221,7 @@ void SYSCFG_DL_PWM_Motor_init(void);
 void SYSCFG_DL_QEI_left_init(void);
 void SYSCFG_DL_QEI_right_init(void);
 void SYSCFG_DL_Timer_Sound_init(void);
+void SYSCFG_DL_Timer_Track_init(void);
 void SYSCFG_DL_I2C_2_init(void);
 
 

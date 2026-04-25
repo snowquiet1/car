@@ -42,7 +42,7 @@
 
 DL_TimerA_backupConfig gPWM_MotorBackup;
 DL_TimerG_backupConfig gQEI_rightBackup;
-DL_TimerA_backupConfig gTimer_SoundBackup;
+DL_TimerA_backupConfig gTimer_TrackBackup;
 
 /*
  *  ======== SYSCFG_DL_init ========
@@ -58,11 +58,12 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     SYSCFG_DL_QEI_left_init();
     SYSCFG_DL_QEI_right_init();
     SYSCFG_DL_Timer_Sound_init();
+    SYSCFG_DL_Timer_Track_init();
     SYSCFG_DL_I2C_2_init();
     /* Ensure backup structures have no valid state */
 	gPWM_MotorBackup.backupRdy 	= false;
 	gQEI_rightBackup.backupRdy 	= false;
-	gTimer_SoundBackup.backupRdy 	= false;
+	gTimer_TrackBackup.backupRdy 	= false;
 
 }
 /*
@@ -75,7 +76,7 @@ SYSCONFIG_WEAK bool SYSCFG_DL_saveConfiguration(void)
 
 	retStatus &= DL_TimerA_saveConfiguration(PWM_Motor_INST, &gPWM_MotorBackup);
 	retStatus &= DL_TimerG_saveConfiguration(QEI_right_INST, &gQEI_rightBackup);
-	retStatus &= DL_TimerA_saveConfiguration(Timer_Sound_INST, &gTimer_SoundBackup);
+	retStatus &= DL_TimerA_saveConfiguration(Timer_Track_INST, &gTimer_TrackBackup);
 
     return retStatus;
 }
@@ -87,7 +88,7 @@ SYSCONFIG_WEAK bool SYSCFG_DL_restoreConfiguration(void)
 
 	retStatus &= DL_TimerA_restoreConfiguration(PWM_Motor_INST, &gPWM_MotorBackup, false);
 	retStatus &= DL_TimerG_restoreConfiguration(QEI_right_INST, &gQEI_rightBackup, false);
-	retStatus &= DL_TimerA_restoreConfiguration(Timer_Sound_INST, &gTimer_SoundBackup, false);
+	retStatus &= DL_TimerA_restoreConfiguration(Timer_Track_INST, &gTimer_TrackBackup, false);
 
     return retStatus;
 }
@@ -100,7 +101,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_TimerA_reset(PWM_Motor_INST);
     DL_TimerG_reset(QEI_left_INST);
     DL_TimerG_reset(QEI_right_INST);
-    DL_TimerA_reset(Timer_Sound_INST);
+    DL_TimerG_reset(Timer_Sound_INST);
+    DL_TimerA_reset(Timer_Track_INST);
     DL_I2C_reset(I2C_2_INST);
 
     DL_GPIO_enablePower(GPIOA);
@@ -109,7 +111,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_TimerA_enablePower(PWM_Motor_INST);
     DL_TimerG_enablePower(QEI_left_INST);
     DL_TimerG_enablePower(QEI_right_INST);
-    DL_TimerA_enablePower(Timer_Sound_INST);
+    DL_TimerG_enablePower(Timer_Sound_INST);
+    DL_TimerA_enablePower(Timer_Track_INST);
     DL_I2C_enablePower(I2C_2_INST);
     delay_cycles(POWER_STARTUP_DELAY);
 }
@@ -319,7 +322,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_QEI_right_init(void) {
  * timerClkFreq = (timerClkSrc / (timerClkDivRatio * (timerClkPrescale + 1)))
  *   1000000 Hz = 4000000 Hz / (8 * (3 + 1))
  */
-static const DL_TimerA_ClockConfig gTimer_SoundClockConfig = {
+static const DL_TimerG_ClockConfig gTimer_SoundClockConfig = {
     .clockSel    = DL_TIMER_CLOCK_BUSCLK,
     .divideRatio = DL_TIMER_CLOCK_DIVIDE_8,
     .prescale    = 3U,
@@ -329,7 +332,7 @@ static const DL_TimerA_ClockConfig gTimer_SoundClockConfig = {
  * Timer load value (where the counter starts from) is calculated as (timerPeriod * timerClockFreq) - 1
  * Timer_Sound_INST_LOAD_VALUE = (65.50 ms * 1000000 Hz) - 1
  */
-static const DL_TimerA_TimerConfig gTimer_SoundTimerConfig = {
+static const DL_TimerG_TimerConfig gTimer_SoundTimerConfig = {
     .period     = Timer_Sound_INST_LOAD_VALUE,
     .timerMode  = DL_TIMER_TIMER_MODE_ONE_SHOT_UP,
     .startTimer = DL_TIMER_STOP,
@@ -337,12 +340,48 @@ static const DL_TimerA_TimerConfig gTimer_SoundTimerConfig = {
 
 SYSCONFIG_WEAK void SYSCFG_DL_Timer_Sound_init(void) {
 
-    DL_TimerA_setClockConfig(Timer_Sound_INST,
-        (DL_TimerA_ClockConfig *) &gTimer_SoundClockConfig);
+    DL_TimerG_setClockConfig(Timer_Sound_INST,
+        (DL_TimerG_ClockConfig *) &gTimer_SoundClockConfig);
 
-    DL_TimerA_initTimerMode(Timer_Sound_INST,
-        (DL_TimerA_TimerConfig *) &gTimer_SoundTimerConfig);
-    DL_TimerA_enableClock(Timer_Sound_INST);
+    DL_TimerG_initTimerMode(Timer_Sound_INST,
+        (DL_TimerG_TimerConfig *) &gTimer_SoundTimerConfig);
+    DL_TimerG_enableClock(Timer_Sound_INST);
+
+
+
+
+
+}
+
+/*
+ * Timer clock configuration to be sourced by BUSCLK /  (4000000 Hz)
+ * timerClkFreq = (timerClkSrc / (timerClkDivRatio * (timerClkPrescale + 1)))
+ *   40000 Hz = 4000000 Hz / (8 * (99 + 1))
+ */
+static const DL_TimerA_ClockConfig gTimer_TrackClockConfig = {
+    .clockSel    = DL_TIMER_CLOCK_BUSCLK,
+    .divideRatio = DL_TIMER_CLOCK_DIVIDE_8,
+    .prescale    = 99U,
+};
+
+/*
+ * Timer load value (where the counter starts from) is calculated as (timerPeriod * timerClockFreq) - 1
+ * Timer_Track_INST_LOAD_VALUE = (10 ms * 40000 Hz) - 1
+ */
+static const DL_TimerA_TimerConfig gTimer_TrackTimerConfig = {
+    .period     = Timer_Track_INST_LOAD_VALUE,
+    .timerMode  = DL_TIMER_TIMER_MODE_PERIODIC_UP,
+    .startTimer = DL_TIMER_STOP,
+};
+
+SYSCONFIG_WEAK void SYSCFG_DL_Timer_Track_init(void) {
+
+    DL_TimerA_setClockConfig(Timer_Track_INST,
+        (DL_TimerA_ClockConfig *) &gTimer_TrackClockConfig);
+
+    DL_TimerA_initTimerMode(Timer_Track_INST,
+        (DL_TimerA_TimerConfig *) &gTimer_TrackTimerConfig);
+    DL_TimerA_enableClock(Timer_Track_INST);
 
 
 
