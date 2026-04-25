@@ -1,0 +1,13 @@
+"./empty.o"
+"./ti_msp_dl_config.o"
+"./startup_mspm0g351x_ticlang.o"
+"./my_drivers/Src/OLED.o"
+"./my_drivers/Src/Track.o"
+"./my_drivers/Src/encoder.o"
+"./my_drivers/Src/font.o"
+"./my_drivers/Src/graysensor.o"
+"./my_drivers/Src/motor.o"
+"./my_drivers/Src/ultrasound.o"
+-l"./device_linker.cmd"
+-ldevice.cmd.genlibs
+-llibc.a
