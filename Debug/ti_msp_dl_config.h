@@ -97,9 +97,9 @@ extern "C" {
 #define GPIO_PWM_Motor_C1_IDX                                DL_TIMER_CC_1_INDEX
 /* GPIO defines for channel 2 */
 #define GPIO_PWM_Motor_C2_PORT                                             GPIOA
-#define GPIO_PWM_Motor_C2_PIN                                     DL_GPIO_PIN_10
-#define GPIO_PWM_Motor_C2_IOMUX                                  (IOMUX_PINCM21)
-#define GPIO_PWM_Motor_C2_IOMUX_FUNC                 IOMUX_PINCM21_PF_TIMA0_CCP2
+#define GPIO_PWM_Motor_C2_PIN                                     DL_GPIO_PIN_15
+#define GPIO_PWM_Motor_C2_IOMUX                                  (IOMUX_PINCM37)
+#define GPIO_PWM_Motor_C2_IOMUX_FUNC                 IOMUX_PINCM37_PF_TIMA0_CCP2
 #define GPIO_PWM_Motor_C2_IDX                                DL_TIMER_CC_2_INDEX
 /* GPIO defines for channel 3 */
 #define GPIO_PWM_Motor_C3_PORT                                             GPIOA
@@ -132,9 +132,9 @@ extern "C" {
 #define QEI_right_INST_INT_IRQN                                 (TIMG8_INT_IRQn)
 /* Pin configuration defines for QEI_right PHA Pin */
 #define GPIO_QEI_right_PHA_PORT                                            GPIOA
-#define GPIO_QEI_right_PHA_PIN                                     DL_GPIO_PIN_1
-#define GPIO_QEI_right_PHA_IOMUX                                  (IOMUX_PINCM2)
-#define GPIO_QEI_right_PHA_IOMUX_FUNC                 IOMUX_PINCM2_PF_TIMG8_CCP0
+#define GPIO_QEI_right_PHA_PIN                                    DL_GPIO_PIN_17
+#define GPIO_QEI_right_PHA_IOMUX                                 (IOMUX_PINCM39)
+#define GPIO_QEI_right_PHA_IOMUX_FUNC                IOMUX_PINCM39_PF_TIMG8_CCP0
 /* Pin configuration defines for QEI_right PHB Pin */
 #define GPIO_QEI_right_PHB_PORT                                            GPIOA
 #define GPIO_QEI_right_PHB_PIN                                    DL_GPIO_PIN_18
@@ -169,6 +169,26 @@ extern "C" {
 #define GPIO_I2C_2_SCL_PIN                                         DL_GPIO_PIN_8
 #define GPIO_I2C_2_IOMUX_SCL                                     (IOMUX_PINCM25)
 #define GPIO_I2C_2_IOMUX_SCL_FUNC                      IOMUX_PINCM25_PF_I2C2_SCL
+
+
+/* Defines for UART_BT */
+#define UART_BT_INST                                                       UART0
+#define UART_BT_INST_FREQUENCY                                          32000000
+#define UART_BT_INST_IRQHandler                                 UART0_IRQHandler
+#define UART_BT_INST_INT_IRQN                                     UART0_INT_IRQn
+#define GPIO_UART_BT_RX_PORT                                               GPIOA
+#define GPIO_UART_BT_TX_PORT                                               GPIOA
+#define GPIO_UART_BT_RX_PIN                                        DL_GPIO_PIN_1
+#define GPIO_UART_BT_TX_PIN                                       DL_GPIO_PIN_10
+#define GPIO_UART_BT_IOMUX_RX                                     (IOMUX_PINCM2)
+#define GPIO_UART_BT_IOMUX_TX                                    (IOMUX_PINCM21)
+#define GPIO_UART_BT_IOMUX_RX_FUNC                      IOMUX_PINCM2_PF_UART0_RX
+#define GPIO_UART_BT_IOMUX_TX_FUNC                     IOMUX_PINCM21_PF_UART0_TX
+#define UART_BT_BAUD_RATE                                                 (9600)
+#define UART_BT_IBRD_32_MHZ_9600_BAUD                                      (208)
+#define UART_BT_FBRD_32_MHZ_9600_BAUD                                       (21)
+
+
 
 
 
@@ -223,6 +243,7 @@ void SYSCFG_DL_QEI_right_init(void);
 void SYSCFG_DL_Timer_Sound_init(void);
 void SYSCFG_DL_Timer_Track_init(void);
 void SYSCFG_DL_I2C_2_init(void);
+void SYSCFG_DL_UART_BT_init(void);
 
 
 bool SYSCFG_DL_saveConfiguration(void);

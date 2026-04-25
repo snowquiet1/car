@@ -60,10 +60,12 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     SYSCFG_DL_Timer_Sound_init();
     SYSCFG_DL_Timer_Track_init();
     SYSCFG_DL_I2C_2_init();
+    SYSCFG_DL_UART_BT_init();
     /* Ensure backup structures have no valid state */
 	gPWM_MotorBackup.backupRdy 	= false;
 	gQEI_rightBackup.backupRdy 	= false;
 	gTimer_TrackBackup.backupRdy 	= false;
+
 
 }
 /*
@@ -104,6 +106,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_TimerG_reset(Timer_Sound_INST);
     DL_TimerA_reset(Timer_Track_INST);
     DL_I2C_reset(I2C_2_INST);
+    DL_UART_Main_reset(UART_BT_INST);
 
     DL_GPIO_enablePower(GPIOA);
     DL_GPIO_enablePower(GPIOB);
@@ -114,6 +117,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_TimerG_enablePower(Timer_Sound_INST);
     DL_TimerA_enablePower(Timer_Track_INST);
     DL_I2C_enablePower(I2C_2_INST);
+    DL_UART_Main_enablePower(UART_BT_INST);
     delay_cycles(POWER_STARTUP_DELAY);
 }
 
@@ -145,6 +149,11 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
     DL_GPIO_enableHiZ(GPIO_I2C_2_IOMUX_SDA);
     DL_GPIO_enableHiZ(GPIO_I2C_2_IOMUX_SCL);
+
+    DL_GPIO_initPeripheralOutputFunction(
+        GPIO_UART_BT_IOMUX_TX, GPIO_UART_BT_IOMUX_TX_FUNC);
+    DL_GPIO_initPeripheralInputFunction(
+        GPIO_UART_BT_IOMUX_RX, GPIO_UART_BT_IOMUX_RX_FUNC);
 
     DL_GPIO_initDigitalInputFeatures(GPIO_GraySensor_PIN_Left1_IOMUX,
 		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_DOWN,
@@ -371,7 +380,7 @@ static const DL_TimerA_ClockConfig gTimer_TrackClockConfig = {
 static const DL_TimerA_TimerConfig gTimer_TrackTimerConfig = {
     .period     = Timer_Track_INST_LOAD_VALUE,
     .timerMode  = DL_TIMER_TIMER_MODE_PERIODIC_UP,
-    .startTimer = DL_TIMER_STOP,
+    .startTimer = DL_TIMER_START,
 };
 
 SYSCONFIG_WEAK void SYSCFG_DL_Timer_Track_init(void) {
@@ -381,6 +390,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_Timer_Track_init(void) {
 
     DL_TimerA_initTimerMode(Timer_Track_INST,
         (DL_TimerA_TimerConfig *) &gTimer_TrackTimerConfig);
+    DL_TimerA_enableInterrupt(Timer_Track_INST , DL_TIMERA_INTERRUPT_LOAD_EVENT);
+	NVIC_SetPriority(Timer_Track_INST_INT_IRQN, 1);
     DL_TimerA_enableClock(Timer_Track_INST);
 
 
@@ -416,5 +427,41 @@ SYSCONFIG_WEAK void SYSCFG_DL_I2C_2_init(void) {
     DL_I2C_enableController(I2C_2_INST);
 
 
+}
+
+static const DL_UART_Main_ClockConfig gUART_BTClockConfig = {
+    .clockSel    = DL_UART_MAIN_CLOCK_BUSCLK,
+    .divideRatio = DL_UART_MAIN_CLOCK_DIVIDE_RATIO_1
+};
+
+static const DL_UART_Main_Config gUART_BTConfig = {
+    .mode        = DL_UART_MAIN_MODE_NORMAL,
+    .direction   = DL_UART_MAIN_DIRECTION_TX_RX,
+    .flowControl = DL_UART_MAIN_FLOW_CONTROL_NONE,
+    .parity      = DL_UART_MAIN_PARITY_NONE,
+    .wordLength  = DL_UART_MAIN_WORD_LENGTH_8_BITS,
+    .stopBits    = DL_UART_MAIN_STOP_BITS_ONE
+};
+
+SYSCONFIG_WEAK void SYSCFG_DL_UART_BT_init(void)
+{
+    DL_UART_Main_setClockConfig(UART_BT_INST, (DL_UART_Main_ClockConfig *) &gUART_BTClockConfig);
+
+    DL_UART_Main_init(UART_BT_INST, (DL_UART_Main_Config *) &gUART_BTConfig);
+    /*
+     * Configure baud rate by setting oversampling and baud rate divisors.
+     *  Target baud rate: 9600
+     *  Actual baud rate: 9600.24
+     */
+    DL_UART_Main_setOversampling(UART_BT_INST, DL_UART_OVERSAMPLING_RATE_16X);
+    DL_UART_Main_setBaudRateDivisor(UART_BT_INST, UART_BT_IBRD_32_MHZ_9600_BAUD, UART_BT_FBRD_32_MHZ_9600_BAUD);
+
+
+    /* Configure Interrupts */
+    DL_UART_Main_enableInterrupt(UART_BT_INST,
+                                 DL_UART_MAIN_INTERRUPT_RX);
+
+
+    DL_UART_Main_enable(UART_BT_INST);
 }
 
