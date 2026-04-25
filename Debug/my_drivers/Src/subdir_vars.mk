@@ -12,6 +12,7 @@ C_SRCS += \
 ../my_drivers/Src/font.c \
 ../my_drivers/Src/graysensor.c \
 ../my_drivers/Src/motor.c \
+../my_drivers/Src/pid.c \
 ../my_drivers/Src/ultrasound.c 
 
 C_DEPS += \
@@ -21,6 +22,7 @@ C_DEPS += \
 ./my_drivers/Src/font.d \
 ./my_drivers/Src/graysensor.d \
 ./my_drivers/Src/motor.d \
+./my_drivers/Src/pid.d \
 ./my_drivers/Src/ultrasound.d 
 
 OBJS += \
@@ -30,6 +32,7 @@ OBJS += \
 ./my_drivers/Src/font.o \
 ./my_drivers/Src/graysensor.o \
 ./my_drivers/Src/motor.o \
+./my_drivers/Src/pid.o \
 ./my_drivers/Src/ultrasound.o 
 
 OBJS__QUOTED += \
@@ -39,6 +42,7 @@ OBJS__QUOTED += \
 "my_drivers\Src\font.o" \
 "my_drivers\Src\graysensor.o" \
 "my_drivers\Src\motor.o" \
+"my_drivers\Src\pid.o" \
 "my_drivers\Src\ultrasound.o" 
 
 C_DEPS__QUOTED += \
@@ -48,6 +52,7 @@ C_DEPS__QUOTED += \
 "my_drivers\Src\font.d" \
 "my_drivers\Src\graysensor.d" \
 "my_drivers\Src\motor.d" \
+"my_drivers\Src\pid.d" \
 "my_drivers\Src\ultrasound.d" 
 
 C_SRCS__QUOTED += \
@@ -57,6 +62,7 @@ C_SRCS__QUOTED += \
 "../my_drivers/Src/font.c" \
 "../my_drivers/Src/graysensor.c" \
 "../my_drivers/Src/motor.c" \
+"../my_drivers/Src/pid.c" \
 "../my_drivers/Src/ultrasound.c" 
 
 

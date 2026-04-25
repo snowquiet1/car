@@ -19,6 +19,7 @@ ORDERED_OBJS += \
 "./my_drivers/Src/font.o" \
 "./my_drivers/Src/graysensor.o" \
 "./my_drivers/Src/motor.o" \
+"./my_drivers/Src/pid.o" \
 "./my_drivers/Src/ultrasound.o" \
 $(GEN_CMDS__FLAG) \
 -Wl,-ldevice.cmd.genlibs \
@@ -145,8 +146,8 @@ empty_LP_MSPM0G3519_nortos_ticlang.out: $(OBJS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(GEN_MISC_FILES__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "empty.o" "ti_msp_dl_config.o" "startup_mspm0g351x_ticlang.o" "my_drivers\Src\OLED.o" "my_drivers\Src\Track.o" "my_drivers\Src\encoder.o" "my_drivers\Src\font.o" "my_drivers\Src\graysensor.o" "my_drivers\Src\motor.o" "my_drivers\Src\ultrasound.o" 
-	-$(RM) "empty.d" "ti_msp_dl_config.d" "startup_mspm0g351x_ticlang.d" "my_drivers\Src\OLED.d" "my_drivers\Src\Track.d" "my_drivers\Src\encoder.d" "my_drivers\Src\font.d" "my_drivers\Src\graysensor.d" "my_drivers\Src\motor.d" "my_drivers\Src\ultrasound.d" 
+	-$(RM) "empty.o" "ti_msp_dl_config.o" "startup_mspm0g351x_ticlang.o" "my_drivers\Src\OLED.o" "my_drivers\Src\Track.o" "my_drivers\Src\encoder.o" "my_drivers\Src\font.o" "my_drivers\Src\graysensor.o" "my_drivers\Src\motor.o" "my_drivers\Src\pid.o" "my_drivers\Src\ultrasound.o" 
+	-$(RM) "empty.d" "ti_msp_dl_config.d" "startup_mspm0g351x_ticlang.d" "my_drivers\Src\OLED.d" "my_drivers\Src\Track.d" "my_drivers\Src\encoder.d" "my_drivers\Src\font.d" "my_drivers\Src\graysensor.d" "my_drivers\Src\motor.d" "my_drivers\Src\pid.d" "my_drivers\Src\ultrasound.d" 
 	-@echo ' '
 
 .PHONY: all clean dependents
