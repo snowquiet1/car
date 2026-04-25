@@ -4,6 +4,8 @@
 #include "ti_msp_dl_config.h"
 #include"stdint.h"
 
+extern float distance;
+
 void UStrasound_Init(void);
 void Ustrasound_sendtrig(void);
 float Ustrasound_getdiatance(void);

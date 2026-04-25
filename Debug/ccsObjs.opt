@@ -1,6 +1,7 @@
 "./empty.o"
 "./ti_msp_dl_config.o"
 "./startup_mspm0g351x_ticlang.o"
+"./my_drivers/Src/Delay.o"
 "./my_drivers/Src/MahonyAHRS.o"
 "./my_drivers/Src/OLED.o"
 "./my_drivers/Src/Track.o"
