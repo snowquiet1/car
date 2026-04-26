@@ -19,8 +19,8 @@ void abs_limit(float *a, float ABS_MAX)
 static void pid_param_init(
     pid_t *pid,
     uint32_t mode,
-    uint32_t maxout,
-    uint32_t intergral_limit,
+    float maxout,
+    float intergral_limit,
     float kp,
     float ki,
     float kd)
@@ -103,8 +103,8 @@ float pid_calc(pid_t *pid, float get, float set)
 void PID_struct_init(
     pid_t *pid,
     uint32_t mode,
-    uint32_t maxout,
-    uint32_t intergral_limit,
+    float maxout,
+    float intergral_limit,
 
     float kp,
     float ki,

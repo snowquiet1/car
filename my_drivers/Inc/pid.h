@@ -8,32 +8,31 @@
 #ifndef __pid_H__
 #define __pid_H__
 
-#include <ti/devices/msp432p4xx/driverlib/driverlib.h>
-
 /* Standard Includes */
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef unsigned char uint8;       // ÎŞ·ûºÅ  8 bits
-typedef unsigned short int uint16; // ÎŞ·ûºÅ 16 bits
-// typedef unsigned long int uint32;  // ÎŞ·ûºÅ 32 bits
-// typedef unsigned long long uint64; // ÎŞ·ûºÅ 64 bits
+typedef unsigned char uint8;       // æ— ç¬¦å· 8 bits
+typedef unsigned short int uint16; // æ— ç¬¦å· 16 bits
+// typedef unsigned long int uint32;  // æ— ç¬¦å· 32 bits
+// typedef unsigned long long uint64; // æ— ç¬¦å· 64 bits
 
-typedef char int8;       // ÓĞ·ûºÅ  8 bits
-typedef short int int16; // ÓĞ·ûºÅ 16 bits
-// typedef long int int32;  // ÓĞ·ûºÅ 32 bits
-// typedef long long int64; // ÓĞ·ûºÅ 64 bits
+typedef char int8;       // æœ‰ç¬¦å· 8 bits
+typedef short int int16; // æœ‰ç¬¦å· 16 bits
+// typedef long int int32;  // æœ‰ç¬¦å· 32 bits
+// typedef long long int64; // æœ‰ç¬¦å· 64 bits
 
-typedef volatile uint8 vuint8;   // Ò×±äĞÔĞŞÊÎ ÎŞ·ûºÅ  8 bits
-typedef volatile uint16 vuint16; // Ò×±äĞÔĞŞÊÎ ÎŞ·ûºÅ 16 bits
-// typedef volatile uint32 vuint32; // Ò×±äĞÔĞŞÊÎ ÎŞ·ûºÅ 32 bits
-// typedef volatile uint64 vuint64; // Ò×±äĞÔĞŞÊÎ ÎŞ·ûºÅ 64 bits
+typedef volatile uint8 vuint8;   // æ˜“å˜(volatile) æ— ç¬¦å· 8 bits
+typedef volatile uint16 vuint16; // æ˜“å˜(volatile) æ— ç¬¦å· 16 bits
+// typedef volatile uint32 vuint32; // æ˜“å˜(volatile) æ— ç¬¦å· 32 bits
+// typedef volatile uint64 vuint64; // æ˜“å˜(volatile) æ— ç¬¦å· 64 bits
 
-typedef volatile int8 vint8;   // Ò×±äĞÔĞŞÊÎ ÓĞ·ûºÅ  8 bits
-typedef volatile int16 vint16; // Ò×±äĞÔĞŞÊÎ ÓĞ·ûºÅ 16 bits
-// typedef volatile int32 vint32; // Ò×±äĞÔĞŞÊÎ ÓĞ·ûºÅ 32 bits
-// typedef volatile int64 vint64; // Ò×±äĞÔĞŞÊÎ ÓĞ·ûºÅ 64 bits
+typedef volatile int8 vint8;   // æ˜“å˜(volatile) æœ‰ç¬¦å· 8 bits
+typedef volatile int16 vint16; // æ˜“å˜(volatile) æœ‰ç¬¦å· 16 bits
+// typedef volatile int32 vint32; // æ˜“å˜(volatile) æœ‰ç¬¦å· 32 bits
+// typedef volatile int64 vint64; // æ˜“å˜(volatile) æœ‰ç¬¦å· 64 bits
 // #define uint32_t uint16
+
 enum
 {
   LLAST = 0,
@@ -42,6 +41,7 @@ enum
   POSITION_PID,
   DELTA_PID,
 };
+
 typedef struct pid_t
 {
   float p;
@@ -61,13 +61,13 @@ typedef struct pid_t
   float output_deadband; // output deadband;
 
   uint32_t pid_mode;
-  uint32_t max_out;
-  uint32_t integral_limit;
+  float max_out;
+  float integral_limit;
 
   void (*f_param_init)(struct pid_t *pid,
                        uint32_t pid_mode,
-                       uint32_t max_output,
-                       uint32_t inte_limit,
+                       float max_output,
+                       float inte_limit,
                        float p,
                        float i,
                        float d);
@@ -115,8 +115,8 @@ typedef struct
   float grade_range;
   
   uint32_t pid_mode;
-  uint32_t max_out;
-  uint32_t integral_limit;
+  float max_out;
+  float integral_limit;
 
   void (*f_param_init)(struct pid_t *pid, 
                        uint32_t      pid_mode,
@@ -133,9 +133,8 @@ typedef struct
 void PID_struct_init(
     pid_t *pid,
     uint32_t mode,
-    uint32_t maxout,
-    uint32_t intergral_limit,
-
+    float maxout,
+    float intergral_limit,
     float kp,
     float ki,
     float kd);
@@ -144,9 +143,11 @@ float pid_calc(pid_t *pid, float get, float set);
 float position_pid_calc(pid_t *pid, float fdb, float ref);
 void ControlLoop(void);
 void ControtLoopTaskInit(void);
+
 extern pid_t pid_lb;
 extern pid_t pid_rb;
 extern pid_t pid_lf;
 extern pid_t pid_rf;
 extern pid_t pid_speed;
+
 #endif
